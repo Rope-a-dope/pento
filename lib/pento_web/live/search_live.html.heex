@@ -1,0 +1,31 @@
+<div>
+  <h1>Search for Product by SKU</h1>
+
+  <.simple_form for={@form} phx-change="validate" phx-submit="search" id="search-form">
+    <.input field={@form[:sku]} label="SKU" type="text" />
+
+    <:actions>
+      <.button phx-disable-with="Searching...">Search</.button>
+    </:actions>
+  </.simple_form>
+
+  <%= if @form.action do %>
+    <%= for {field, {message, _}} <- @form.errors do %>
+      <p><%= humanize(field) %> error: <%= message %></p>
+    <% end %>
+  <% end %>
+
+  <%= if @search_result do %>
+    <div>
+      <h2>Product found:</h2>
+      <p>Name: <%= @search_result.name %></p>
+      <p>Description: <%= @search_result.description %></p>
+      <p>SKU: <%= @search_result.sku %></p>
+      <p>Price: <%= @search_result.unit_price %></p>
+    </div>
+  <% else %>
+    <%= if @search_attempted do %>
+      <p>Invalid SKU</p>
+    <% end %>
+  <% end %>
+</div>
